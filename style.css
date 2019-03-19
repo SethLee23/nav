@@ -32,7 +32,7 @@ main >.wrapper div:nth-child(3){
 body{
     height: 100vh;/*viewpory height,此时表示和浏览器页面一样高*/
     background: grey url(./pic/nav12.jpg) no-repeat center center;
-    background-size: 100% 100%;
+    background-size: cover;
 }
 main{
     display: flex;
