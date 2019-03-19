@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>my nav</title>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    
+</head>
+
+<body>
+    <header></header>
+    <main>
+        <div class="wrapper" id="mainxxx"></div>
+        
+       
+       
+    </main>
+    <footer></footer>
+    <!--以下用js来表示main部分，由于键盘部分用到了数组结构，数组嵌套数组，以及每个键对应的网址还对应了哈希-->
+    <script>
+        var keys = {
+            0: { 0: 'q', 1: 'w', 2: 'e', 3: 'r', 4: 't', 5: 'y', 6: 'u', 7: 'i', 8: 'o', 9: 'p', length: 10 },
+            1: { 0: 'a', 1: 's', 2: 'd', 3: 'f', 4: 'g', 5: 'h', 6: 'j', 7: 'k', 8: 'l', length: 9 },
+            2: { 0: 'z', 1: 'x', 2: 'c', 3: 'v', 4: 'b', 5: 'n', 6: 'm', length: 7 },
+            length: 3
+        }
+        var hash = {
+            q: 'qq.com',
+            w: 'weibo.com',
+            e: 'ele.me',
+            r: 'renren.com',
+            t: 'tianya.com',
+            y: 'youtube.com',
+            u: 'uc.com',
+            i: 'iqiyi.com',
+            o: 'opera.com',
+            p: undefined,
+            a: 'acfun.tv',
+            s: 'sohu.com',
+            z: 'zhihu.com',
+            m: 'www.mcdonalds.com.cn',
+            h: 'sethlee23.github.io/index.html',
+            x: 'xiedaimala.com',
+            g: 'github.com/SethLee23/blog'
+        }
+        //取出localstorage中对应的hash，相当于读档,以下将简化
+        var hashinlocalstorage = getFromLocalstorage('zzz')
+        if(hashinlocalstorage){
+            hash = hashinlocalstorage
+        }
+        //不关心的东西包装起来,减轻代码压力
+        function getFromLocalstorage(name){
+           return JSON.parse(localStorage.getItem(name) || 'null')
+        }
+        //一种方便的写法，function c(tagName){return document.creatElement(tagName)}
+        //遍历attributes，然后取出他的key，在对应元素的key
+        function c(tagName,attributes){
+          var element = document.createElement(tagName)
+            for(var key in attributes){
+                element[key] = attributes[key]//key为className，Id，textcontent
+            }
+            return element
+        }
+
+
+
+
+        //遍历keys，创建div和kbd
+        index = 0//index从0开始时，小于几循环几次
+        while (index < keys['length']) {
+            divx = c('div',{className:'row'}) //1.创造一个div标签
+            divx.className = 'row'
+            mainxxx.appendChild(divx)//2.在main中插入div
+            var row = keys[index]//6.提取每个数组，当index分别0,1,2就可以提取不同的数组了，这是第三步，第一步为创造div，循环创造3个，第二步为创造看kbd，循环创造10个
+            //console.log(row)
+            index2 = 0
+            while (index2 < row['length']) {  //7.长短不一的kbd
+                var kbdz = c('kbd')  //3.创造kbd标签
+                kbdz.textContent = row[index2]  //5.z标签的文字内容为打印出的row对应的每个数字
+                kbdz.className = 'key'//改变class名字
+                var buttona = c('button') //第二节课，首先创建button，将button加到每个div上
+                buttona.textContent = 'Edit'  //第二节课 ，为button加上内容，设置绝对定位，
+                buttona.id = row[index2] //di二节课，分别给每个button设置一个id，对应row里面的每个字母
+                
+                //这一步厉害了，拿到图标，首先创建一个图片，然后通过hash获取对应的网址，
+                //通过添加网址和http://+网址+/favicon.ico，记得创建文件后不仅要添加他的src还要添加到对应的位置上去！！！
+                //需要考虑很多事情啊，如果网址不存在，，那么就需要新加一个图片，来让图片都显现，网址不对就修改新的图片地址‘’
+                var image = c('img')
+                if(hash[row[index2]]){
+                image.src = 'http://' + hash[row[index2]] + '/favicon.ico'
+                }else{image.src = '//i.loli.net/2019/03/19/5c90470b15cca.png'
+                }
+                //以下实现监测图片,如果图片错了，那么就进入你的页面
+                image.onerror = function(error){
+                    error.target.src = "//i.loli.net/2019/03/19/5c9048c41797c.png"
+                    console.log('加载失败')
+                    console.log(error)
+                }
+                //以下实现监听用户按键,由于按键设置在里面，所以监听事件也要放在里面哇！重点在onerror
+                buttona.onclick = function (click) {
+                    console.log('555,我被点了一下')
+                    //console.log(buttona)//小tips：buttona是一个容器，容器没动，但是他装着是最后一次的数据
+                    //console.log(click.target.id) 
+                    console.log('这是click的target')
+                    console.log(click.target)
+                    //这里是一个比较纠结的地方，每次改变了网址以后就希望改变图标，那么就让button2=button（由于click的target就是点击事件对应的button），然后在进行后续操作,不懂button2的意义
+                    var button2 = click.target
+                    console.log('button2')
+                    console.log(button2.previousSibling)
+                    //image2就是button的兄弟，也就是img
+                    var image2 = button2.previousSibling
+                    var key = button2.id//取出用户是在哪按得间，由于修改了网址，那么取到换了的button的id，然后取出hash[key]
+                    var x = prompt('给我一个网址')//取出用户输入的网址
+                    hash[key] = x//hash变更，存储为网址
+                         image2.src = 'http://'+ x + '/favicon.ico'
+                    image2.onerror = function(error){
+                    error.target.src = "//i.loli.net/2019/03/19/5c9048c41797c.png"
+                    console.log('加载失败')
+                    console.log(error)
+                    }
+                   
+                    localStorage.setItem('zzz',JSON.stringify(hash))//将每次改变的hash存储在localstorage，并且由于localstorage只能存储字符串，因此就要把hash转化为字符串
+                    //console.log(hash)//以上相当于存档
+                }
+                kbdz.appendChild(image)
+                kbdz.appendChild(buttona)
+                divx.appendChild(kbdz)  //4.将kbd标签插入divx，也就是每次创造出的div中
+                index2 = index2 + 1
+            }
+            index = index + 1
+        }
+        //以下实现在顾客点不同的键位时就可以进入不同的界面，监听键盘事件
+        //第一步：监听用户输入的key
+        //第二步：将用户输入的key对应hash中的value
+        //第三步：设置全局属性，当输入一个key时就可以输出网页
+        document.onkeypress = function (keyboardinformation) {
+            /*console.log('我发现你输入了一个键')
+            console.log('你按得所有信息是')
+            console.log(keyboardinformation['key'])*/  //打印出的你所需要知道的所有细节，
+            //你打字的信息，这是一个hash，你可以选择你所需要的信息，比如keyboardinformation['key']
+            //也就是key对应的值
+            var key = keyboardinformation['key']//将key定义为你输入的值
+            var website = hash[key]  //将website定义为key对应的value
+            console.log(website)  //打印出website
+            //location.href = 'http://'+website  //在当前标签页打开
+            window.open('http://' + website, '_blank')  //在新标签页打开网址
+        }
+    </script>
+</body>
+
+</html>

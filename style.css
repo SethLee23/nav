@@ -1,0 +1,78 @@
+*{
+margin: 0;
+padding: 0;
+}
+a{text-decoration: none;}
+kbd{
+    width: 4em;/*由于kbd不设置宽就会出现宽度不一致的情况，因此必须加上width，以及由于kbd是内联元素，不能修改样式，因此必须修改为inline-block*/
+    height: 4em;
+    display: inline-block;
+    text-transform: uppercase;/*设置为大写字母*/
+    position: relative;
+}
+kbd>button{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: none;/*这里表示在正常状态下，也就是不hover时，不出现这个键位*/
+}  
+kbd:hover>button{
+    display: inline-block;/*当hoverzzzzz*/
+}
+main >.wrapper div:nth-child(2){
+    margin-left: 1em;
+}
+main >.wrapper div:nth-child(3){
+    margin-left: -3em;
+}
+
+.wrapper div{
+    flex-wrap: wrap;
+}
+body{
+    height: 100vh;/*viewpory height,此时表示和浏览器页面一样高*/
+    background: grey url(./pic/nav13.jpg) no-repeat center center;
+    background-size: cover;
+}
+main{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 100vh;
+}
+.key{
+    width: 50px;
+    height: 40px;
+    background: linear-gradient(to bottom, #292929 0%,#111111 100%);
+    border: none;
+    color: #C5C5C5;
+    border: 1px solid #373737;
+    border-radius: 6px;
+    /*box-shadow四个值分别是水平、垂直、模糊度、扩展面积、颜色*/
+    box-shadow: 0 0 0 1px #1A1B1C,0 0 0 2px #1F2020, 0 2px 0 2px #080808; 
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    font-family: Helvetica, sans-serif;
+    position: relative;
+}
+
+.row{
+    margin: 20px;
+}
+.row .key{
+    margin: 0 8px;
+}/*给key加margin是为了加间距*/
+.wrapper{
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+}
+.key img{
+width: 16px;
+height: 16px;
+position: absolute;
+bottom: 0;
+left: 0;
+}/*图片宽高适应kbd*/
