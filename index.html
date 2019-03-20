@@ -65,42 +65,13 @@
             return element
         }
 
-
-
-
-        //遍历keys，创建div和kbd
-        index = 0//index从0开始时，小于几循环几次
-        while (index < keys['length']) {
-            divx = c('div',{className:'row'}) //1.创造一个div标签
-            divx.className = 'row'
-            mainxxx.appendChild(divx)//2.在main中插入div
-            var row = keys[index]//6.提取每个数组，当index分别0,1,2就可以提取不同的数组了，这是第三步，第一步为创造div，循环创造3个，第二步为创造看kbd，循环创造10个
-            //console.log(row)
-            index2 = 0
-            while (index2 < row['length']) {  //7.长短不一的kbd
-                var kbdz = c('kbd')  //3.创造kbd标签
-                kbdz.textContent = row[index2]  //5.z标签的文字内容为打印出的row对应的每个数字
-                kbdz.className = 'key'//改变class名字
-                var buttona = c('button') //第二节课，首先创建button，将button加到每个div上
+        //继续优化：
+        function creatButton(id){
+            var buttona = c('button') //第二节课，首先创建button，将button加到每个div上
                 buttona.textContent = 'Edit'  //第二节课 ，为button加上内容，设置绝对定位，
-                buttona.id = row[index2] //di二节课，分别给每个button设置一个id，对应row里面的每个字母
-                
-                //这一步厉害了，拿到图标，首先创建一个图片，然后通过hash获取对应的网址，
-                //通过添加网址和http://+网址+/favicon.ico，记得创建文件后不仅要添加他的src还要添加到对应的位置上去！！！
-                //需要考虑很多事情啊，如果网址不存在，，那么就需要新加一个图片，来让图片都显现，网址不对就修改新的图片地址‘’
-                var image = c('img')
-                if(hash[row[index2]]){
-                image.src = 'http://' + hash[row[index2]] + '/favicon.ico'
-                }else{image.src = '//i.loli.net/2019/03/19/5c90470b15cca.png'
-                }
-                //以下实现监测图片,如果图片错了，那么就进入你的页面
-                image.onerror = function(error){
-                    error.target.src = "//i.loli.net/2019/03/19/5c9048c41797c.png"
-                    console.log('加载失败')
-                    console.log(error)
-                }
-                //以下实现监听用户按键,由于按键设置在里面，所以监听事件也要放在里面哇！重点在onerror
-                buttona.onclick = function (click) {
+                buttona.id = id //di二节课，分别给每个button设置一个id，对应row里面的每个字母
+                 //以下实现监听用户按键,由于按键设置在里面，所以监听事件也要放在里面哇！重点在onerror
+                 buttona.onclick = function (click) {
                     console.log('555,我被点了一下')
                     //console.log(buttona)//小tips：buttona是一个容器，容器没动，但是他装着是最后一次的数据
                     //console.log(click.target.id) 
@@ -118,13 +89,59 @@
                          image2.src = 'http://'+ x + '/favicon.ico'
                     image2.onerror = function(error){
                     error.target.src = "//i.loli.net/2019/03/19/5c9048c41797c.png"
-                    console.log('加载失败')
-                    console.log(error)
                     }
                    
                     localStorage.setItem('zzz',JSON.stringify(hash))//将每次改变的hash存储在localstorage，并且由于localstorage只能存储字符串，因此就要把hash转化为字符串
                     //console.log(hash)//以上相当于存档
                 }
+                return buttona
+        }
+
+        function creatImage(domain){
+            //这一步厉害了，拿到图标，首先创建一个图片，然后通过hash获取对应的网址，
+                //通过添加网址和http://+网址+/favicon.ico，记得创建文件后不仅要添加他的src还要添加到对应的位置上去！！！
+                //需要考虑很多事情啊，如果网址不存在，，那么就需要新加一个图片，来让图片都显现，网址不对就修改新的图片地址‘’
+                var image = c('img')
+                if(domain){
+                image.src = 'http://' + domain + '/favicon.ico'
+                }else{image.src = '//i.loli.net/2019/03/19/5c90470b15cca.png'
+                }
+                //以下实现监测图片,如果图片错了，那么就进入你的页面
+                image.onerror = function(error){
+                    error.target.src = "//i.loli.net/2019/03/19/5c9048c41797c.png"
+                    console.log('加载失败')
+                    console.log(error)
+                }
+                return image
+
+        }
+
+
+        //遍历keys，创建div和kbd
+        index = 0//index从0开始时，小于几循环几次
+        while (index < keys['length']) {
+            divx = c('div',{className:'row'}) //1.创造一个div标签
+            divx.className = 'row'
+
+            mainxxx.appendChild(divx)//2.在main中插入div
+
+            var row = keys[index]//6.提取每个数组，当index分别0,1,2就可以提取不同的数组了，这是第三步，第一步为创造div，循环创造3个，第二步为创造看kbd，循环创造10个
+            //console.log(row)
+            index2 = 0
+            while (index2 < row['length']) {  //7.长短不一的kbd
+                
+            
+            var buttona = creatButton(row[index2])
+                
+                
+                //这一步厉害了，拿到图标，首先创建一个图片，然后通过hash获取对应的网址，
+                //通过添加网址和http://+网址+/favicon.ico，记得创建文件后不仅要添加他的src还要添加到对应的位置上去！！！
+                //需要考虑很多事情啊，如果网址不存在，，那么就需要新加一个图片，来让图片都显现，网址不对就修改新的图片地址‘’
+                var image = creatImage(hash[row[index2]])
+
+                var kbdz = c('kbd')  //3.创造kbd标签
+                kbdz.textContent = row[index2]  //5.z标签的文字内容为打印出的row对应的每个数字
+                kbdz.className = 'key'//改变class名字
                 kbdz.appendChild(image)
                 kbdz.appendChild(buttona)
                 divx.appendChild(kbdz)  //4.将kbd标签插入divx，也就是每次创造出的div中
